@@ -13,11 +13,16 @@ namespace AutoHub.Infrastructure.Repositories
 
             Customers = new CustomerRepository(_context);
             Items = new ItemRepository(_context);
+            Employees = new EmployeeRepository(_context);
+            Invoices = new InvoiceRepository(_context);
+            InvoiceItems = new InvoiceItemRepository(_context);
         }
 
         public ICustomerRepository Customers { get; }
-
         public IItemRepository Items { get; }
+        public IEmployeeRepository Employees { get; }
+        public IInvoiceRepository Invoices { get; }
+        public IInvoiceItemRepository InvoiceItems { get; }
 
         public async Task<int> SaveAsync()
         {

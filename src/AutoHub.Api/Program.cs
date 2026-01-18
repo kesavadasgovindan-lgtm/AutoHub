@@ -20,6 +20,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<ItemService>();
+builder.Services.AddScoped<InvoiceService>();
+builder.Services.AddScoped<EmployeeService>();
+
 
 
 
