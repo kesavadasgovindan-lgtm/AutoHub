@@ -10,10 +10,14 @@ namespace AutoHub.Infrastructure.Repositories
         public UnitOfWork(AutoHubDbContext context)
         {
             _context = context;
+
             Customers = new CustomerRepository(_context);
+            Items = new ItemRepository(_context);
         }
 
         public ICustomerRepository Customers { get; }
+
+        public IItemRepository Items { get; }
 
         public async Task<int> SaveAsync()
         {

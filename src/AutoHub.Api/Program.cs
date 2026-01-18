@@ -19,6 +19,7 @@ builder.Services.AddDbContext<AutoHubDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<ItemService>();
 
 
 
