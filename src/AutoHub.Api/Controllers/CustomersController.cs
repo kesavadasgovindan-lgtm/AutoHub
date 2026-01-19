@@ -1,11 +1,13 @@
 ﻿using AutoHub.Application.Services;
 using AutoHub.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.Api.Controllers
 {
     [ApiController]
     [Route("api/customers")]
+    [Authorize]
     public class CustomersController : ControllerBase
     {
         private readonly CustomerService _service;
@@ -32,6 +34,7 @@ namespace AutoHub.Api.Controllers
             return Ok(customer);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(Customer customer)
         {

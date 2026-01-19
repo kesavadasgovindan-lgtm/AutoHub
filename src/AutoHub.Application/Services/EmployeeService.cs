@@ -26,6 +26,7 @@ namespace AutoHub.Application.Services
 
         public async Task CreateAsync(Employee employee)
         {
+            employee.PasswordHash = PasswordHasher.Hash(employee.PasswordHash);
             await _unitOfWork.Employees.AddAsync(employee);
             await _unitOfWork.SaveAsync();
         }

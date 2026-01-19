@@ -1,11 +1,13 @@
 ﻿using AutoHub.Application.Services;
 using AutoHub.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoHub.Api.Controllers
 {
     [ApiController]
     [Route("api/employees")]
+    [Authorize(Roles = "Admin")]
     public class EmployeesController : ControllerBase
     {
         private readonly EmployeeService _service;
@@ -33,6 +35,7 @@ namespace AutoHub.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Employee employee)
         {
             await _service.CreateAsync(employee);
