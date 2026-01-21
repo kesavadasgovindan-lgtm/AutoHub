@@ -6,6 +6,7 @@ using AutoHub.Application.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoHub.Infrastructure;
 
 
 
@@ -31,14 +32,25 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AutoHubDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Repositories
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IInvoiceItemRepository, InvoiceItemRepository>();
+builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
+builder.Services.AddScoped<IQuotationItemRepository, QuotationItemRepository>();
+
+// Services
 builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<ItemService>();
 builder.Services.AddScoped<InvoiceService>();
-builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<QuotationService>();
+
 
 
 

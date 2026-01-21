@@ -16,5 +16,8 @@ namespace AutoHub.Infrastructure.Data
         public DbSet<Item> Items { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
+        public DbSet<Quotation> Quotations => Set<Quotation>();
+        public DbSet<QuotationItem> QuotationItems => Set<QuotationItem>();
+
     }
 }

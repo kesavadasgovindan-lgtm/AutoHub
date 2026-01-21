@@ -28,13 +28,13 @@ namespace AutoHub.Application.Services
         {
             employee.PasswordHash = PasswordHasher.Hash(employee.PasswordHash);
             await _unitOfWork.Employees.AddAsync(employee);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Employee employee)
         {
             _unitOfWork.Employees.Update(employee);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeactivateAsync(int id)
@@ -44,7 +44,7 @@ namespace AutoHub.Application.Services
 
             employee.IsActive = false;
             _unitOfWork.Employees.Update(employee);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

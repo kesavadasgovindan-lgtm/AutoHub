@@ -27,13 +27,13 @@ namespace AutoHub.Application.Services
         public async Task CreateAsync(Customer customer)
         {
             await _unitOfWork.Customers.AddAsync(customer);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Customer customer)
         {
             _unitOfWork.Customers.Update(customer);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -42,7 +42,7 @@ namespace AutoHub.Application.Services
             if (customer == null) return;
 
             _unitOfWork.Customers.Delete(customer);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

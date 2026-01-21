@@ -4,6 +4,7 @@ using AutoHub.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AutoHubDbContext))]
-    partial class AutoHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260120150015_LinkInvoiceToQuotation")]
+    partial class LinkInvoiceToQuotation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,7 +89,7 @@ namespace AutoHub.Infrastructure.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Discount")
+                    b.Property<decimal>("GrossAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("InvoiceDate")
@@ -95,20 +98,23 @@ namespace AutoHub.Infrastructure.Migrations
                     b.Property<string>("InvoiceNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MakeModel")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("NetAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("QuotationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
+                    b.Property<string>("PaymentMode")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("SubTotal")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("VatAmount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("VehicleNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -125,9 +131,6 @@ namespace AutoHub.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("GrossAmount")
                         .HasColumnType("decimal(18,2)");
@@ -154,8 +157,6 @@ namespace AutoHub.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId");
 
                     b.ToTable("InvoiceItems");
                 });
@@ -283,15 +284,6 @@ namespace AutoHub.Infrastructure.Migrations
                     b.ToTable("QuotationItems");
                 });
 
-            modelBuilder.Entity("AutoHub.Domain.Entities.InvoiceItem", b =>
-                {
-                    b.HasOne("AutoHub.Domain.Entities.Invoice", null)
-                        .WithMany("Items")
-                        .HasForeignKey("InvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("AutoHub.Domain.Entities.Quotation", b =>
                 {
                     b.HasOne("AutoHub.Domain.Entities.Employee", "CreatedByEmployee")
@@ -320,11 +312,6 @@ namespace AutoHub.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Quotation");
-                });
-
-            modelBuilder.Entity("AutoHub.Domain.Entities.Invoice", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("AutoHub.Domain.Entities.Quotation", b =>

@@ -2,6 +2,7 @@
 using AutoHub.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AutoHub.Application.Services
@@ -48,7 +49,7 @@ namespace AutoHub.Application.Services
                 }
             }
 
-            invoice.GrossAmount = gross;
+            invoice.NetAmount = gross;
             invoice.VatAmount = vat;
             invoice.NetAmount = gross + vat;
             invoice.InvoiceDate = DateTime.Now;
@@ -61,7 +62,46 @@ namespace AutoHub.Application.Services
                 await _unitOfWork.InvoiceItems.AddAsync(item);
             }
 
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
+        public async Task<Invoice> CreateFromQuotationAsync(Quotation quotation)
+        {
+            var invoice = new Invoice
+            {
+                CustomerId = quotation.CustomerId,
+                InvoiceDate = DateTime.Now,
+                InvoiceNumber = $"INV-{DateTime.Now.Ticks}",
+                SubTotal = quotation.SubTotal,
+                Discount = quotation.Discount,
+                VatAmount = quotation.VatAmount,
+                NetAmount = quotation.NetAmount,
+                QuotationId = quotation.Id,
+                Status = "Active"
+            };
+
+            await _unitOfWork.Invoices.AddAsync(invoice);
+            await _unitOfWork.SaveChangesAsync();
+
+            foreach (var qi in quotation.Items)
+            {
+                var item = new InvoiceItem
+                {
+                    InvoiceId = invoice.Id,
+                    Description = qi.Description,
+                    Rate = qi.Rate,
+                    Quantity = qi.Quantity,
+                    Discount = qi.Discount,
+                    NetAmount = qi.Total
+                };
+
+                await _unitOfWork.InvoiceItems.AddAsync(item);
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return invoice;
+        }
+
+
     }
 }

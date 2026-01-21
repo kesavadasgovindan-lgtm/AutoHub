@@ -27,13 +27,13 @@ namespace AutoHub.Application.Services
         public async Task CreateAsync(Item item)
         {
             await _unitOfWork.Items.AddAsync(item);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Item item)
         {
             _unitOfWork.Items.Update(item);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         // Stock increase (purchase)
@@ -45,7 +45,7 @@ namespace AutoHub.Application.Services
             item.Stock += quantity;
             _unitOfWork.Items.Update(item);
 
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
 
         // Stock decrease (billing)
@@ -59,7 +59,7 @@ namespace AutoHub.Application.Services
                 item.Stock = 0;
 
             _unitOfWork.Items.Update(item);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

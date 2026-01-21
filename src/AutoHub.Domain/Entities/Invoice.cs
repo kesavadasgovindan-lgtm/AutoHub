@@ -1,28 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace AutoHub.Domain.Entities
 {
     public class Invoice
     {
         public int Id { get; set; }
 
-        public string InvoiceNumber { get; set; } = string.Empty;
-
-        public DateTime InvoiceDate { get; set; } = DateTime.Now;
-
         public int CustomerId { get; set; }
 
-        public string VehicleNumber { get; set; } = string.Empty;
+        public DateTime InvoiceDate { get; set; }
 
-        public string MakeModel { get; set; } = string.Empty;
+        public string InvoiceNumber { get; set; } = string.Empty;
 
-        public string PaymentMode { get; set; } = "Cash";
+        public decimal SubTotal { get; set; }
 
-        public decimal GrossAmount { get; set; }
+        public decimal Discount { get; set; }
 
         public decimal VatAmount { get; set; }
 
         public decimal NetAmount { get; set; }
 
-        public bool IsCancelled { get; set; } = false;
+        public int? QuotationId { get; set; }
+
+        public string Status { get; set; } = "Active";
+
+        public List<InvoiceItem> Items { get; set; } = new();
     }
 }

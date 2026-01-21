@@ -1,18 +1,20 @@
-﻿using AutoHub.Domain.Entities;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace AutoHub.Application.Interfaces
 {
     public interface IUnitOfWork
     {
         ICustomerRepository Customers { get; }
-        IItemRepository Items { get; }
-
         IEmployeeRepository Employees { get; }
+        IItemRepository Items { get; }
 
         IInvoiceRepository Invoices { get; }
         IInvoiceItemRepository InvoiceItems { get; }
 
-        Task<int> SaveAsync();
+        // ✅ Quotation
+        IQuotationRepository Quotations { get; }
+        IQuotationItemRepository QuotationItems { get; }
+
+        Task<int> SaveChangesAsync();
     }
 }
