@@ -1,5 +1,6 @@
 ﻿using AutoHub.Application.Interfaces;
 using AutoHub.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -40,6 +41,25 @@ namespace AutoHub.Application.Services
             quotation.Status = "Converted";
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task ApproveAsync(Quotation quotation)
+        {
+            if (quotation.Status != "Draft")
+                throw new InvalidOperationException("Only draft quotations can be approved");
+
+            quotation.Status = "Approved";
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task ConvertAsync(Quotation quotation)
+        {
+            if (quotation.Status != "Approved")
+                throw new InvalidOperationException("Quotation already converted or not approved");
+
+            quotation.Status = "Converted";
+            await _unitOfWork.SaveChangesAsync();
+        }
+
 
 
     }

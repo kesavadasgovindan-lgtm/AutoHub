@@ -74,46 +74,45 @@ namespace AutoHub.Api.Controllers
             return Ok(quotation);
         }
 
-        // ✅ APPROVE
         [HttpPost("{id}/approve")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Approve(int id)
         {
             var quotation = await _quotationService.GetByIdAsync(id);
+
             if (quotation == null)
                 return NotFound();
 
-            quotation.Status = "Approved";
-            await _quotationService.UpdateAsync(quotation);
+            await _quotationService.ApproveAsync(quotation);
 
             return Ok("Quotation approved");
         }
 
         [HttpPost("{id}/convert")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ConvertToInvoice(
-       int id,
-       [FromServices] InvoiceService invoiceService)
+        public async Task<IActionResult> Convert(
+     int id,
+     [FromServices] InvoiceService invoiceService)
         {
             var quotation = await _quotationService.GetByIdAsync(id);
 
             if (quotation == null)
-                return NotFound("Quotation not found");
+                return NotFound();
 
-            if (quotation.Status != "Approved")
-                return BadRequest("Only approved quotations can be converted");
+            if (quotation.Status == "Converted")
+                return BadRequest("Quotation already converted");
 
             var invoice = await invoiceService.CreateFromQuotationAsync(quotation);
 
-            await _quotationService.MarkAsConvertedAsync(quotation);
+            await _quotationService.ConvertAsync(quotation);
 
             return Ok(new
             {
-                message = "Quotation converted to invoice successfully",
-                invoiceId = invoice.Id,
-                invoiceNumber = invoice.InvoiceNumber
+                invoice.Id,
+                invoice.InvoiceNumber
             });
         }
+
 
 
 
